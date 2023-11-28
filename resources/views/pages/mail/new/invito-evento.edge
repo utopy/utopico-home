@@ -1,0 +1,159 @@
+@!layout("layouts/admin")
+@set("title", "Invito evento")
+
+@section("body")
+<form class="h-full w-full flex flex-col gap-4" method="post" x-data="invite" x-init="$watch('selectedCourse', (val) => onCourseChange(val))">
+
+  @!component("components/section-bar",{
+    title: title
+  })
+
+  <div class="inline-flex rounded-lg" role="group">
+    @each((courseType, i) in types)
+    <button type="button" @click="changeCourseType('{{courseType.nomeTavolo}}')"
+      :class="courseType != '{{courseType.nomeTavolo}}' || 'bg-accent text-white focus:text-white hover:bg-accent'"
+      class="px-4 py-2 text-xs text-accent bg-white border-secondary hover:bg-secondary hover:text-primary focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700
+        border uppercase flex-1 focus:ring-primary focus:border-primary font-bold
+        @if(i == 0 && types.length > 1)
+          rounded-l-lg
+          border-r
+        @elseif(i == types.length -1 && types.length > 1)
+          rounded-r-lg
+          border-l-0
+        @else
+          border-l-0
+          border-r
+        @end
+      "
+    >
+
+      {{courseType.tipo}}
+    </button>
+    @end
+  </div>
+
+  @each(courseType in types)
+
+  <div class="" x-show="courseType == '{{courseType.nomeTavolo}}'">
+
+    @component("components/card",{})
+      @!component("components/form/select", {
+        name: "course",
+        label: "Corso " + courseType.tipo,
+        placeholder: "Seleziona corso",
+        options: courses.filter(course => course.type === courseType.nomeTavolo),
+        optionLabelKey: "titolo",
+        optionValueKey: "uidProdotto",
+        xModel: "selectedCourse",
+      })
+    @end
+  </div>
+
+  @end
+
+    <div x-cloak x-show="speakersLoaded && selectedCourse">
+
+      @component("components/card",{})
+
+        @component("components/form/select", {
+          name: "relatore",
+          label: "Relatore",
+          placeholder: "Seleziona relatore",
+          options: [],
+          xShow: "selectedCourse",
+          xChange: "selectSpeaker"
+        })
+
+          <template x-if="speakers.length == 0">
+            <option value="0" selected hidden>Nessun relatore trovato</option>
+          </template>
+
+          <template x-for="(speaker in speakers" :key="speaker.uid">
+            <option :value="speaker.uid" x-text="`${speaker.nome} ${speaker.cognome} (${speaker.email})`"></option>
+          </template>
+
+        @end
+
+        <template x-if="selectedSpeakers.length">
+          <div class="flex flex-col gap-2">
+          <div class="text-sm font-bold opacity-50">
+            <span x-text="selectedSpeakers.length"></span> Relatori selezionati
+          </div>
+          <div class="flex">
+          <template x-for="s in selectedSpeakers" :key="s.uid" >
+            <div class="inline-flex items-center px-2 py-1 mr-2 text-sm font-medium text-accent bg-secondary rounded">
+
+              <span x-text="`${s.nome} ${s.cognome}`" x-init="console.log(s)"></span>
+              <button type="button" class="inline-flex items-center p-1 ml-2 text-sm text-blue-400 bg-transparent rounded-sm hover:bg-primary hover:text-white " aria-label="Remove" @click="() => unselectSpeaker(s)">
+                <svg class="w-2 h-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                </svg>
+                <span class="sr-only">Remove badge</span>
+              </button>
+            </div>
+          </template>
+            </div>
+          </div>
+        </template>
+
+      @end
+
+    </div>
+
+
+
+
+</form>
+
+@end
+
+@section("scripts")
+@super
+<script>
+  document.addEventListener("alpine:init", function () {
+    Alpine.data("invite", () => ({
+      speakersLoaded: false,
+      selectedCourse: null,
+      selectedSpeakers: [],
+      speakers: [],
+      courseType: "{{types[0].nomeTavolo}}",
+      init() {
+      },
+      initializeState(){
+        this.speakersLoaded = false
+        this.selectedCourse = null
+        this.speakers = []
+        this.selectedSpeakers = []
+        this.courseType = "{{types[0].nomeTavolo}}"
+      },
+      changeCourseType(t) {
+        this.initializeState()
+        this.courseType = t
+      },
+      selectSpeaker(e){
+        const uid = e.target.value
+        const _speakers = this.speakers.filter(speaker => speaker.uid === uid)
+
+        if(_speakers.length >= 1){
+          const s = {..._speakers[0]}
+          this.selectedSpeakers.push({...s})
+        }
+        
+      },
+      unselectSpeaker(speaker){
+        this.selectedSpeakers = this.selectedSpeakers.filter(s => s.uid != speaker.uid)
+      },
+      onCourseChange(val) {
+        this.selectedSpeakers = []
+        fetch("{{route('api.v1.speakers.list')}}" + "?uid=" + val)
+          .then(res => res.json())
+          .then(data => {
+            this.speakers = data.filter(el => el.uid != null)
+            this.speakersLoaded = true
+          })
+
+      }
+    }))
+  })
+</script>
+@end

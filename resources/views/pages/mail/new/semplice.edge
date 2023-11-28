@@ -1,0 +1,51 @@
+@!layout("layouts/admin")
+@set("title", "Mail Semplice")
+
+
+@section("body")
+<form class="h-full w-full flex flex-col gap-4" method="post">
+  @!component("components/section-bar",{
+    title: title
+  })
+
+  <input hidden name="templateId" value="{{templateId}}"/>
+
+  @component("components/card",{})
+
+    @!component("components/form/input-row", {
+      name: "to",
+      label: "Destinatario",
+      placeholder:"mail@provider.com"
+    })
+    
+    @!component("components/form/input-row", {
+      name: "subject",
+      label: "Soggetto",
+      placeholder:"Lorem ipsum..."
+    })
+    
+    @!component("components/form/textarea", {
+      name: "body",
+      label: "Messaggio",
+      placeholder:"Lorem ipsum..."
+    })
+    
+  @end  
+
+  
+  <div class="flex gap-4">
+      <a href="/admin/messages/templates"
+        class="px-4 py-2 flex-1 text-black border border-secondary rounded-lg hover:bg-seconary flex justify-center gap-2"
+        type="submit">
+        <span class="material-symbols-outlined">visibility</span>
+        Anteprima
+      </a>
+    <button type="submit"
+      class="px-4 py-2 flex-1 text-white bg-accent rounded-lg hover:bg-primary flex justify-center gap-2" type="submit">
+      <span class="material-symbols-outlined">outbox</span>
+      Invia
+    </button>
+  </div>
+  
+</form>
+@end

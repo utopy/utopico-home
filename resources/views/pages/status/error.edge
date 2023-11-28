@@ -1,0 +1,18 @@
+@!layout("layouts/admin")
+@set("title", "Errore!")
+
+@section("body")
+<div class="h-full w-full flex flex-col gap-4" x-data="profile">
+  @!component("components/section-bar",{
+  title: title
+  })
+
+  <div class="bg-error flex-1 p-4 rounded-lg flex justify-center items-center ">
+    <div class="flex flex-col text-center gap-2">
+      <span class="material-symbols-outlined text-7xl font-light">warning</span>
+      <span class="text-xl">{{message}}</span>
+    </div>
+  </div>
+
+</div>
+@end

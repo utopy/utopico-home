@@ -1,0 +1,11 @@
+
+<th scope="col" class="px-6 py-3 {{ extraCss ?? '' }}">
+	@if(value)
+		{{value}}
+	@else if($slots.main)
+		{{{ await $slots.main() }}}
+	@end
+	
+	
+</th>
+

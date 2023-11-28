@@ -1,0 +1,28 @@
+@!layout("layouts/admin")
+@set("title", title ?? "Stime salvate")
+
+@section("body")
+<div class="h-full w-full flex flex-col gap-4" x-data="profile">
+  @!component("components/section-bar",{
+    title: title,
+  })
+
+  <div class="flex flex-col flex-1 ">
+    </div>
+  </div>
+
+  <div class="flex gap-4">
+    <a href="/admin/messages/templates"
+      class="px-4 py-2 flex-1 text-black border border-secondary rounded-lg hover:bg-seconary flex justify-center gap-2"
+      type="submit">
+      <span class="material-symbols-outlined">style</span>
+      Templates
+    </a>
+    <a hreF="/calculator/new"
+      class="px-4 py-2 flex-1 text-white bg-accent rounded-lg hover:bg-primary flex justify-center gap-2" type="submit">
+      <span class="material-symbols-outlined">calculate</span>
+      Nuova stima
+    </a>
+  </div>
+</div>
+@end

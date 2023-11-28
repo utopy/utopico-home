@@ -1,0 +1,36 @@
+@set("readonly", protected ?? null)
+@set("label", label ?? "")
+@set("placeholder", placeholder ?? "")
+
+<div class="flex flex-col gap-2 w-full">
+  <label class="text-sm font-bold opacity-50">{{label}}</label>
+  <div class="flex gap-2 items-center">
+  <input 
+  
+  type="checkbox"
+
+  @if(xModel) 
+  x-model="{{xModel}}"
+  @end
+
+  @if(xShow) 
+  x-show="{{xShow}}"
+  @end
+
+  @if(xChange) 
+    x-on:change="{{xChange}}"
+  @end
+
+  @if(xEffect) 
+  x-effect="{{xEffect}}"
+  @end
+  
+
+  @if(readonly) 
+  readonly
+  @end
+  
+  name="{{name}}" id="{{name}}-id" value="{{value ?? '1'}}" class="text-primary font-bold bg-white rounded-lg border-secondary focus:ring-primary focus:border-primary" placeholder="{{placeholder}}"/>
+    <label class="text-sm" for="{{name}}-id">{{placeholder}}</label>
+  </div>
+</div>

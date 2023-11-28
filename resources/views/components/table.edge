@@ -1,0 +1,44 @@
+@set("headers", headers ?? [])
+
+
+<table class="w-full text-sm text-left text-white rounded-lg">
+	<thead class="text-xs uppercase bg-primary">
+		<tr class="rounded-lg">
+			@each(header in headers)
+
+				@!component("components/table-col", {
+					value: header
+				})
+
+			@end
+
+			@if($slots.extraHeaders)
+				{{{ await $slots.extraHeaders() }}}
+			@end
+
+		</tr>
+	</thead>
+	<tbody class="">
+
+		@each(element in data)
+
+		<tr class="bg-white text-primary hover:bg-secondary cursor-pointer bg-background">
+
+			@each((header, i) in headers)
+
+				<th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">
+					{{element[header]}}
+				</th>
+
+			@end
+			
+			@if($slots.extraColumn)
+				{{{ await $slots.extraColumn({element}) }}}
+			@end
+		
+		</tr>
+
+		@end
+
+	</tbody>
+</table>

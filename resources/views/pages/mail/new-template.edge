@@ -1,0 +1,37 @@
+@!layout("layouts/admin")
+@set("title", "Nuovo template")
+
+@section("body")
+<div class="h-full w-full flex flex-col gap-4" x-data="profile">
+  @!component("components/section-bar",{
+  title: title
+  })
+
+  <form class="flex-1 gap-4 rounded-lg">
+    <div class="p-4 w-full flex flex-col bg-background rounded-lg gap-2">
+      <div class="flex gap-4 w-full">
+      @!component("components/form/input-row", {
+        name: "name",
+        label: "Template name",
+        placeholder:"Name",
+      })
+      @!component("components/form/input-row", {
+        name: "slug",
+        label: "Slug",
+        placeholder:"slug",
+        value: ""
+      })
+      </div>
+    </div>
+  </form>
+
+  <div class="flex gap-4">
+    <div class="flex flex-1"></div>
+    <a hreF="/admin/messages/templates/new"
+      class="px-4 py-2 flex-1 text-white bg-accent rounded-lg hover:bg-primary flex justify-center gap-2" type="submit">
+      <span class="material-symbols-outlined">save</span>
+      Salva
+    </a>
+  </div>
+</div>
+@end

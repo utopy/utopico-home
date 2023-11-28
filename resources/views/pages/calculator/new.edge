@@ -1,0 +1,200 @@
+@!layout("layouts/admin")
+@set("title", "Calcolatore Stime")
+
+@section("body")
+<form class="h-full w-full flex flex-col gap-4" method="post" x-data="calculator">
+
+  @!component("components/section-bar",{
+    title: title
+
+  })
+
+	<div class="flex gap-4 flex-1">
+
+	<div class="flex flex-col gap-4">
+		@component("components/card", {
+		})
+
+			@!component("components/form/input-row", {
+				name: "name",
+				xModel: "name",
+				label: "Titolo",
+				placeholder: "Titolo Calcolatore"
+			})
+
+			<div class="flex gap-4">
+
+				@!component("components/form/input-row", {
+					name: "weeks",
+					xModel: "weeks",
+					type: "number",
+					label: "Settimane",
+					placeholder: "Settimane stimate"
+				})
+
+			@!component("components/form/input-row", {
+				name: "days",
+				xModel: "days",
+				type: "number",
+				label: "Giorni",
+				placeholder: "Giorni alla settimana"
+			})
+
+			</div>
+			<div class="flex gap-4">
+
+				@!component("components/form/input-row", {
+					name: "hours",
+					xModel: "hours",
+					type: "number",
+					label: "Ore al giorno",
+					placeholder: "Ore",
+
+				})
+
+				@!component("components/form/input-row", {
+					name: "rate",
+					xModel: "rate",
+					type: "number",
+					label: "Tariffa oraria",
+					placeholder: "Tariffa oraria",
+
+				})
+
+
+			</div>
+
+				@!component("components/form/input-row", {
+					name: "taxPercentage",
+					xModel: "taxPercentage",
+					type: "number",
+					label: "Percentuale",
+					placeholder: "Percentuale Tasse",
+					hidden: true
+				})
+
+			<template x-if="approximate">
+
+			@!component("components/form/input-row", {
+				name: "approximationFactor",
+				xModel: "approximationFactor",
+				label: "Approximation Factor",
+				value: "Approssimazione",
+				type: "number"
+			})
+
+			</template>
+
+			<div class="" x-text="count() + ' Ore stimate alla settimana (su 168 h settimanali)'"></div>
+		@end
+
+  <div class="flex gap-4">
+    <button type="submit"
+      class="px-4 py-2 flex-1 text-white bg-accent rounded-lg hover:bg-primary flex justify-center gap-2" type="submit">
+      <span class="material-symbols-outlined">save</span>
+      Salva
+    </button>
+  </div>
+
+	</div>
+
+	@component("components/card", {
+		extraCss: "w-1/4"
+	})
+		<div class="flex flex-col flex-1 justify-between gap-4">
+			<div class="flex flex-col gap-2">
+			  <label class="text-sm font-bold opacity-50">Impostazioni</label>
+				@!component("components/form/checkbox", {
+					name: "approximate",
+					xModel: "approximate",
+					placeholder: "Approssimazione"
+				})
+
+				@!component("components/form/checkbox", {
+					name: "letThemPay",
+					xModel: "letThemPay",
+					placeholder: "Tasse a carico loro"
+				})
+
+				@!component("components/form/checkbox", {
+					name: "resultsRounded",
+					xModel: "resultsRounded",
+					placeholder: "Risultati arrotondati"
+				})
+
+			</div>
+
+			<div class="bg-secondary flex flex-col gap-2 p-2 rounded-lg">
+			  <label class="text-sm text-accent font-bold ">Dettagli</label>
+				<div class=" rounded-md flex flex-col text-sm font-bold text-primary">
+					<span x-text="`Netto: ${gain()}€`"></span>
+					<span x-text="`Totale: ${total()}€`"></span>
+				</div>
+			</div>
+
+		</div>
+
+	@end
+
+	</div>
+
+
+</form>
+
+@end
+
+@section("scripts")
+@super
+<script>
+  document.addEventListener("alpine:init", function () {
+    Alpine.data("calculator", () => ({
+
+			name: "Ciao",
+			weeks: 1,
+			days:1,
+			rate: 25,
+			hours: 6,
+			taxPercentage: 25,
+			approximationFactor: 1,
+
+			approximate: false,
+			letThemPay: false,
+			resultsRounded: false,
+
+
+			count(){
+				return this.days * this.hours
+			},
+
+			toggleApproximation(){
+				this.approximate = !this.approximate
+			},
+
+			taxesAmount(gain){
+				const g = gain ?? this.gain()
+				return (gain ?? this.gain() * this.taxPercentage) / 100
+			},
+
+			gain(){
+				return this.days * this.weeks * this.rate * this.hours * this.approximationFactor
+			},
+
+			total(){
+				if(this.letThemPay) return this.gain() + this.taxesAmount()
+				return this.gain()
+			},
+
+			parsed(){
+				return {
+					weeks: parseInt(this.weeks),
+					days: parseInt(this.days),
+					rate: parseInt(this.rate)
+				}
+			}
+
+	
+
+    }))
+  })
+</script>
+@end

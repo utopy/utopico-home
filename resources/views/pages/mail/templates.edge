@@ -1,0 +1,27 @@
+@!layout("layouts/admin")
+@set("title", "Messaggi")
+
+@section("body")
+<div class="h-full w-full flex flex-col gap-4" x-data="profile">
+  @!component("components/section-bar",{
+  title: title
+  })
+
+  <div class="bg-background flex-1 flex flex-col p-4 rounded-lg gap-4">
+    @each(t in templates)
+      <div class="p-2 border border-secondary rounded-lg">
+        {{ t.name }}
+      </div>
+    @end
+  </div>
+
+  <div class="flex gap-4">
+    <div class="flex flex-1"></div>
+    <a hreF="/admin/messages/templates/new"
+      class="px-4 py-2 flex-1 text-white bg-accent rounded-lg hover:bg-primary flex justify-center gap-2" type="submit">
+      <span class="material-symbols-outlined">shadow_add</span>
+      Nuovo template
+    </a>
+  </div>
+</div>
+@end

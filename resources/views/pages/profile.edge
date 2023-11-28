@@ -1,0 +1,123 @@
+@!layout("layouts/admin")
+@set("title", "Profilo")
+
+@section("body")
+<div class="h-full w-full flex flex-col gap-4" x-data="profile">
+  @!component("components/section-bar",{
+  title: title
+  })
+
+  <form class="flex flex-col gap-4 rounded-lg h-full" method="post">
+
+    <div class="p-4 w-full flex flex-col bg-background rounded-lg gap-2">
+      <div class="flex">
+        <h3 class="text-xl font-bold w-full">Informazioni base</h3>
+        <span @click="toggleAccordion('baseInfoToggled')"
+          class="material-symbols-outlined cursor-pointer rounded-full select-none hover:bg-secondary flex items-center justify-center pt-0.5 hover:text-primary">expand_more</span>
+      </div>
+
+      <div :class="baseInfoToggled ? 'flex' : 'hidden'" class="flex-col gap-4 mt-4">
+        @!component("components/form/input-row", {
+          name: "email",
+          label: "Email",
+          placeholder:"mail@provider.com",
+          value: user.email
+        })
+
+        <div class="flex gap-4 w-full">
+
+          @!component("components/form/input-row", {
+          name: "firstName",
+          label: "Nome",
+          placeholder:"Mario",
+          value: user.firstName
+          })
+
+          @!component("components/form/input-row", {
+          name: "lastName",
+          label: "Cognome",
+          placeholder:"Rossi",
+          value: user.lastName
+          })
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="p-4 w-full flex flex-col bg-background rounded-lg gap-2">
+      <div class="flex">
+        <h3 class="text-xl font-bold w-full">Provider email</h3>
+        <span @click="toggleAccordion('emailProviderToggled')"
+          class="material-symbols-outlined cursor-pointer rounded-full select-none hover:bg-secondary flex items-center justify-center pt-0.5 hover:text-primary">expand_more</span>
+      </div>
+
+      <div :class="emailProviderToggled ? 'flex' : 'hidden'" class="flex-col gap-4 mt-4">
+
+        @!component("components/form/input-row", {
+        name: "providerEmail",
+        label: "Email",
+        placeholder:"mail@provider.com",
+        value: userData.emailProvider?.email ?? ""
+        })
+
+        @!component("components/form/input-row", {
+        name: "providerServer",
+        label: "Server smtp",
+        placeholder:"smtp.server.com",
+        value: userData.emailProvider?.server ?? ""
+        })
+
+        <div class="flex gap-4 w-full">
+
+          @!component("components/form/input-row", {
+            name: "providerPassword",
+            label: "Password",
+            type: "password",
+            placeholder:"password",
+            value: userData.emailProvider?.password
+          })
+
+          @!component("components/form/input-row", {
+            name: "providerPort",
+            label: "Porta",
+            placeholder:"465",
+            value: userData.emailProvider?.port
+          })
+
+        </div>
+
+      </div>
+
+    </div>
+    <div class="flex gap-2 mx-auto">
+      <a href="/profile/json" class="px-4 py-2 text-black border border-secondary hover:bg-secondary rounded-lg "
+        >json</a>
+      <button class="px-4 py-2 text-black border border-secondary hover:bg-secondary rounded-lg "
+        type="reset">Reset</button>
+      <button class="px-4 py-2 text-white bg-accent rounded-lg hover:bg-primary" type="submit">Salva</button>
+    </div>
+  </form>
+
+</div>
+@end
+
+@section("scripts")
+@super
+
+<script>
+  document.addEventListener("alpine:init", function () {
+    Alpine.data("profile", () => ({
+      baseInfoToggled: true,
+      emailProviderToggled: true,
+      toggleAccordion(name) {
+        this[name] = !this[name]
+      }
+
+
+    }))
+  })
+
+</script>
+@end
