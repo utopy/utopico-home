@@ -11,10 +11,10 @@ export default class User extends BaseModel {
     public email: string
 
     @column()
-    public first_name: string
+    public firstName: string
 
     @column()
-    public last_name: string
+    public lastName: string
 
     @column()
     public godMode: boolean
@@ -41,6 +41,11 @@ export default class User extends BaseModel {
     @computed()
     public get role() {
         return Roles[this.roleId]
+    }
+
+    @computed()
+    public get fullName() {
+        return this.firstName + " " + this.lastName
     }
 
 

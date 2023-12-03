@@ -1,0 +1,9 @@
+@set("tag", tag ?? "button")
+<{{tag}} {{ $props.serializeExcept(['icon', 'label', 'tag']) }}
+  class="px-4 py-2 flex-1 text-white bg-accent rounded-lg hover:bg-primary flex justify-center gap-2">
+
+  @if(icon)
+    <span class="material-symbols-outlined">{{icon}}</span>
+  @end
+  {{ label }}
+</{{tag}}>

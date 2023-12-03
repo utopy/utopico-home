@@ -1,0 +1,14 @@
+@set("css", "")
+
+@if(capitalize)
+	@set("css", css + "capitalize")
+@end
+
+@if(bold)
+	@set("css", css + " font-bold")
+@end
+<span 
+	class="text-2xl {{css}}"
+>
+	{{value}}
+</span>

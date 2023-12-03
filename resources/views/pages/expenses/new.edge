@@ -1,0 +1,89 @@
+@!layout("layouts/admin")
+@set("title", title ?? "Nuova Spesa")
+
+@section("body")
+<form class="h-full w-full flex flex-col gap-4" method="post" action="{{route('v1.protected.expenses.new.create')}}">
+
+  @!component("components/section-bar",{
+    title: title,
+  })
+
+
+  @card({
+  })
+
+    <div class="flex gap-4">
+
+      @!form.inputRow({
+        label: "Nome spesa",
+        name: "name",
+        placeholder: "Bolletta",
+        required: true
+      })
+
+      @!form.select({
+        label: "Categoria",
+        placeholder: "Seleziona una categoria",
+        optionValueKey: "id",
+        optionLabelKey: "name",
+        options: categories,
+        name: "expense_category_id"
+      })
+
+    </div>
+
+    <div class="flex gap-4">
+
+      @!form.inputRow({
+        label: "Ammontare spesa",
+        name: "ammount",
+        type: "number",
+        placeholder: "Ammontare (senza valuta)"
+      })
+
+      @!form.select({
+        label: "Tipologia",
+        placeholder: "Seleziona una tipologia",
+        optionValueKey: "id",
+        optionLabelKey: "name",
+        options: [{
+            id: "loss",
+            name : "Spesa"
+          },{
+            id: "gain",
+            name : "Incasso"
+          }],
+        name: "type"
+      })
+
+    </div>
+
+    <div class="flex h-full max-h-[300px]">
+      @!form.textarea({
+        name: "description",
+        placeholder: "Inserisci una piccola descrizione",
+        label: "Descrizione"
+      })
+    </div>
+    
+
+  @end
+
+
+  <div class="flex gap-4">
+    <a href="/admin/messages/templates"
+      class="px-4 py-2 flex-1 text-black border border-secondary rounded-lg hover:bg-seconary flex justify-center gap-2"
+      type="submit">
+      <span class="material-symbols-outlined">style</span>
+      Templates
+    </a>
+
+    @!form.button({
+      label: "Nuova Spesa",
+      icon: "calculate",
+      type: "submit"
+    })
+
+  </div>
+</form>
+@end

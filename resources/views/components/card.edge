@@ -1,5 +1,6 @@
 @set("extraCss", extraCss ?? "")
-    <div class="bg-background flex-1 flex flex-col p-4 rounded-lg gap-4 {{extraCss}}">
+@set("as", as ?? "div")
+    <{{as}} class="bg-background flex-1 flex flex-col p-4 rounded-lg gap-4 {{extraCss}}" {{$props.serializeExcept(['extraCss', 'as'])}}>
 		{{{ await $slots.main() }}}
-	</div>
+</{{as}}>
 

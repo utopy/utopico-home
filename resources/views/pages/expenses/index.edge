@@ -1,0 +1,53 @@
+@!layout("layouts/admin")
+@set("title", title ?? "Spese Recenti")
+
+@section("body")
+<div class="h-full w-full flex flex-col gap-4">
+
+  @!component("components/section-bar",{
+    title: title,
+  })
+
+  <div class="flex flex-col flex-1 gap-4">
+
+    @each(expense in expenses)
+      @set("expense", expense.serialize())
+      <a href="{{route('v1.protected.expenses.details', [expense.id])}}" class="flex rounded-lg border border-secondary p-4 p-8 gap-4 hover:bg-background cursor-pointer">
+        <div class="flex-1 flex flex-4 items-center gap-4">
+          @!icon({
+            name: expense.category?.icon_name ?? ''
+          })
+          @!text({
+            capitalize: true, 
+            value: expense.name
+          })
+        </div>
+        <div class="flex gap-4">
+          @!text({
+            value: expense.ammount + "€",
+            bold: true
+          })
+        </div>
+      </a>
+    @end
+
+  </div>
+
+  <div class="flex gap-4">
+    <a href="/admin/messages/templates"
+      class="px-4 py-2 flex-1 text-black border border-secondary rounded-lg hover:bg-seconary flex justify-center gap-2"
+      type="submit">
+      <span class="material-symbols-outlined">style</span>
+      Templates
+    </a>
+
+    @!form.button({
+      label: "Nuova Spesa",
+      icon: "calculate",
+      tag: "a",
+      href: route("v1.protected.expenses.new.view")
+    })
+
+  </div>
+</div>
+@end

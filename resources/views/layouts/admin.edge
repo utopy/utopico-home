@@ -1,3 +1,4 @@
+@set("user", auth.user)
 <!DOCTYPE html>
 <html lang="en" class="h-full">
 <head>
@@ -17,11 +18,11 @@
       theme: {
         extend: {
 colors: {
- 'text': '#0c0f0b',
- 'background': '#f2f4f0',
- 'primary': '#374332',
- 'secondary': '#e4e9e2',
- 'accent': '#78936c',
+   'text': '#0c0f0b',
+   'background': '#f2f4f0',
+   'primary': '#374332',
+   'secondary': '#e4e9e2',
+   'accent': '#78936c',
 },
         }
       }
@@ -32,8 +33,10 @@ colors: {
 <body class="w-full h-full p-0 m-0 overflow-hidden">
 <div class="p-4 flex gap-4 h-full w-full max-w-[1280px] mx-auto" x-data="appdata">
 
-  @if(!!auth?.user && !hideSidebar)
+  @if(!!user && !hideSidebar)
+
     @include("partials/sidebar")
+
   @end
 
   <div class="flex-1 w-9/12 flex flex-col h-full rounded-lg overflow-auto">

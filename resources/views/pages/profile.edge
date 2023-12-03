@@ -17,12 +17,12 @@
       </div>
 
       <div :class="baseInfoToggled ? 'flex' : 'hidden'" class="flex-col gap-4 mt-4">
-        @!component("components/form/input-row", {
-          name: "email",
-          label: "Email",
-          placeholder:"mail@provider.com",
-          value: user.email
-        })
+          @!component("components/form/input-row", {
+            name: "email",
+            label: "Email",
+            placeholder:"mail@provider.com",
+            value: auth.user.email
+          })
 
         <div class="flex gap-4 w-full">
 
@@ -46,54 +46,9 @@
 
     </div>
 
-    <div class="p-4 w-full flex flex-col bg-background rounded-lg gap-2">
-      <div class="flex">
-        <h3 class="text-xl font-bold w-full">Provider email</h3>
-        <span @click="toggleAccordion('emailProviderToggled')"
-          class="material-symbols-outlined cursor-pointer rounded-full select-none hover:bg-secondary flex items-center justify-center pt-0.5 hover:text-primary">expand_more</span>
-      </div>
-
-      <div :class="emailProviderToggled ? 'flex' : 'hidden'" class="flex-col gap-4 mt-4">
-
-        @!component("components/form/input-row", {
-        name: "providerEmail",
-        label: "Email",
-        placeholder:"mail@provider.com",
-        value: userData.emailProvider?.email ?? ""
-        })
-
-        @!component("components/form/input-row", {
-        name: "providerServer",
-        label: "Server smtp",
-        placeholder:"smtp.server.com",
-        value: userData.emailProvider?.server ?? ""
-        })
-
-        <div class="flex gap-4 w-full">
-
-          @!component("components/form/input-row", {
-            name: "providerPassword",
-            label: "Password",
-            type: "password",
-            placeholder:"password",
-            value: userData.emailProvider?.password
-          })
-
-          @!component("components/form/input-row", {
-            name: "providerPort",
-            label: "Porta",
-            placeholder:"465",
-            value: userData.emailProvider?.port
-          })
-
-        </div>
-
-      </div>
-
-    </div>
     <div class="flex gap-2 mx-auto">
-      <a href="/profile/json" class="px-4 py-2 text-black border border-secondary hover:bg-secondary rounded-lg "
-        >json</a>
+      <a href="/profile/json"
+        class="px-4 py-2 text-black border border-secondary hover:bg-secondary rounded-lg ">json</a>
       <button class="px-4 py-2 text-black border border-secondary hover:bg-secondary rounded-lg "
         type="reset">Reset</button>
       <button class="px-4 py-2 text-white bg-accent rounded-lg hover:bg-primary" type="submit">Salva</button>

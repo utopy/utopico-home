@@ -1,5 +1,4 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
-import { Roles } from '../../app/Enums/Roles'
 
 export default class extends BaseSchema {
     protected tableName = 'users'
@@ -24,8 +23,8 @@ export default class extends BaseSchema {
 
             table.boolean("verified").notNullable().defaultTo(false)
 
-            table.integer("role_id").unsigned().defaultTo(Roles.user).references("roles")
 
+            table.integer("role_id").unsigned().references("roles.id")
 
             /**
              * Uses timestampz for PostgreSQL and DATETIME2 for MSSQL

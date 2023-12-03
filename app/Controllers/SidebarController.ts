@@ -25,25 +25,15 @@ const pages: Page[] = [{
 	current: false,
 	role: Roles.user
 }, {
-	name: "quotes",
-	label: "Preventivi",
-	routeName: "admin.protected.quotes.index",
-	icon: {
-		className: "material-symbols-outlined",
-		value: "request_quote",
-	},
-	current: false,
-	role: Roles.admin
-}, {
-	name: "calculator",
-	label: "Calcolatore stima",
+	name: "expenses",
+	label: "spese",
 	routeName: "admin.protected.calculator.index",
 	icon: {
 		className: "material-symbols-outlined",
 		value: "calculate",
 	},
 	current: false,
-	role: Roles.admin
+	role: Roles.user
 }, {
 	name: "messages",
 	label: "Messaggi",

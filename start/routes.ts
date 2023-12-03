@@ -19,6 +19,7 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
+import ExpensesController from 'App/Controllers/Http/ExpensesController'
 import PagesController from 'App/Controllers/Http/PagesController'
 import UsersController from 'App/Controllers/Http/UsersController'
 
@@ -31,6 +32,32 @@ Route.group(() => {
     Route.group(() => {
 
         Route.get("/", PagesController.homePage).as("index")
+
+        Route.group(() => {
+
+            Route.get("/", PagesController.profile).as("view")
+
+            Route.post("/", UsersController.updateProfile).as("update")
+
+        }).as("profile").prefix("/profile")
+
+        Route.group(() => {
+
+            Route.get("/", PagesController.expenses).as("view")
+
+            Route.get("/:id", PagesController.expenseDetails).as("details")
+
+            Route.group(() => {
+
+                Route.get("/", PagesController.newExpense).as("view")
+
+                Route.post("/", ExpensesController.createExpense).as("create")
+
+            }).as("new").prefix("/new")
+
+
+
+        }).as("expenses").prefix("/expenses")
 
     }).as("protected").middleware(['auth'])
 
