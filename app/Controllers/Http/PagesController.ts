@@ -27,13 +27,16 @@ export default class PagesController {
             query.where("created_at", ">", (DateTime.local().startOf("month").toSQLDate())!)
         }).orderBy("created_at", "desc")
 
-        const monthlyTotal = expenses.reduce((prev, curr) => prev + curr.ammount, 0)
+        const monthlyTotal = expenses.filter(expense => expense.type === "loss").reduce((prev, curr) => prev + curr.ammount, 0)
         const personalMonthlyTotal = expenses.filter(expense => expense.userId === auth.user!.id).reduce((prev, curr) => prev + curr.ammount, 0)
+
+        const personalMonthlyGains = expenses.filter(expense => expense.userId === auth.user!.id && expense.type === "gain").reduce((prev, curr) => prev + curr.ammount, 0)
 
         return view.render("pages/expenses/index", {
             expenses,
             monthlyTotal,
-            personalMonthlyTotal
+            personalMonthlyTotal,
+            personalMonthlyGains
         })
 
     }
