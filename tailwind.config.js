@@ -72,6 +72,6 @@ module.exports = {
       }
     }
   },
-  plugins: [],
+  plugins: ["typography, forms"],
 }
 

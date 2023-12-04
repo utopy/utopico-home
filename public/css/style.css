@@ -1,7 +1,20 @@
+@font-face {
+  font-family: "Neue Montreal";
+  src: url("/fonts/NeueMontreal-Regular.otf");
+}
+
+@font-face {
+  font-family: "Neue Montreal";
+  src: url("/fonts/NeueMontreal-Bold.otf");
+  font-weight: bold;
+
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+
 * {
-  font-family: "Neue Montreal"
+  font-family: "Neue Montreal";
 }

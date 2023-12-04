@@ -1,3 +1,17 @@
+@font-face {
+  font-family: "Neue Montreal";
+
+  src: url("/fonts/NeueMontreal-Regular.otf");
+}
+
+@font-face {
+  font-family: "Neue Montreal";
+
+  src: url("/fonts/NeueMontreal-Bold.otf");
+
+  font-weight: bold;
+}
+
 /*
 ! tailwindcss v3.3.5 | MIT License | https://tailwindcss.com
 */
@@ -639,10 +653,6 @@ video {
   width: 100%;
 }
 
-.max-w-\[1280px\] {
-  max-width: 1280px;
-}
-
 .flex-1 {
   flex: 1 1 0%;
 }
@@ -764,6 +774,11 @@ video {
   background-color: rgb(235 250 209 / var(--tw-bg-opacity));
 }
 
+.bg-accent-900 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(31 46 5 / var(--tw-bg-opacity));
+}
+
 .bg-background-100 {
   --tw-bg-opacity: 1;
   background-color: rgb(232 232 227 / var(--tw-bg-opacity));
@@ -796,41 +811,6 @@ video {
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-}
-
-.bg-accent-200 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(215 245 163 / var(--tw-bg-opacity));
-}
-
-.bg-primary-200 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(207 215 193 / var(--tw-bg-opacity));
-}
-
-.bg-primary-900 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(27 31 20 / var(--tw-bg-opacity));
-}
-
-.bg-accent-900 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(31 46 5 / var(--tw-bg-opacity));
-}
-
-.bg-accent-950 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(15 23 3 / var(--tw-bg-opacity));
-}
-
-.bg-accent-500 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(155 230 25 / var(--tw-bg-opacity));
-}
-
-.bg-accent-700 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(93 138 15 / var(--tw-bg-opacity));
 }
 
 .p-0 {
@@ -1014,7 +994,7 @@ video {
 }
 
 * {
-  font-family: "Neue Montreal"
+  font-family: "Neue Montreal";
 }
 
 .hover\:bg-background-200:hover {
@@ -1022,19 +1002,14 @@ video {
   background-color: rgb(208 208 200 / var(--tw-bg-opacity));
 }
 
-.hover\:bg-secondary-100:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(232 237 222 / var(--tw-bg-opacity));
-}
-
-.hover\:bg-accent-700:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(93 138 15 / var(--tw-bg-opacity));
-}
-
 .hover\:bg-primary-700:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(81 93 60 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-secondary-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(232 237 222 / var(--tw-bg-opacity));
 }
 
 .hover\:text-white:hover {
