@@ -35,7 +35,9 @@
 
         @end
       </div>
-      @include("partials/mobileNavbar")
+      @if(!!user && !hideSidebar)
+        @include("partials/mobileNavbar")
+      @end
     </div>
 
 
