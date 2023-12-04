@@ -37,9 +37,9 @@ export default class Expense extends BaseModel {
     public user: BelongsTo<typeof User>
 
     @beforeCreate()
-    public static async(expense: Expense) {
+    public static async onCreate(expense: Expense) {
         if (expense.$dirty.name) {
-            expense.slug = string.dashCase(string.noCase(expense.name + " " + expense.id))
+            expense.slug = string.dashCase(string.noCase(expense.name + " " + expense.$dirty.id))
         }
     }
 

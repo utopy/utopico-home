@@ -29,6 +29,10 @@ Route.group(() => {
 
     Route.post("/login", UsersController.login).as("loginRequest")
 
+    Route.get("/register", PagesController.register).as("register")
+
+    Route.post("/register", UsersController.register).as("registerRequest")
+
     Route.group(() => {
 
         Route.get("/", PagesController.homePage).as("home")

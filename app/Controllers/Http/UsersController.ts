@@ -21,6 +21,16 @@ export default class UsersController {
 
     }
 
+    static async register({ request, response, auth }: HttpContextContract) {
+
+        const {
+            email, firstName, lastName, password
+        } = request.only(['email', 'firstName', 'lastName', 'password'])
+
+        const user = new User()
+
+    }
+
     static async updateProfile({ request, response, auth }: HttpContextContract) {
 
         const { firstName, lastName, email } = request.only(['firstName', 'lastName', 'email'])
