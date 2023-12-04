@@ -31,7 +31,7 @@ Route.group(() => {
 
     Route.group(() => {
 
-        Route.get("/", PagesController.homePage).as("index")
+        Route.get("/", PagesController.homePage).as("home")
 
         Route.group(() => {
 
@@ -45,8 +45,6 @@ Route.group(() => {
 
             Route.get("/", PagesController.expenses).as("view")
 
-            Route.get("/:id", PagesController.expenseDetails).as("details")
-
             Route.group(() => {
 
                 Route.get("/", PagesController.newExpense).as("view")
@@ -55,6 +53,7 @@ Route.group(() => {
 
             }).as("new").prefix("/new")
 
+            Route.get("/:id", PagesController.expenseDetails).as("details")
 
 
         }).as("expenses").prefix("/expenses")

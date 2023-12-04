@@ -1,11 +1,13 @@
 @!layout("layouts/admin")
 @set("title", "Profilo")
 
+@section("sectionBar")
+  @!component("components/section-bar",{
+    title: title
+  })
+@end
 @section("body")
 <div class="h-full w-full flex flex-col gap-4" x-data="profile">
-  @!component("components/section-bar",{
-  title: title
-  })
 
   <form class="flex flex-col gap-4 rounded-lg h-full" method="post">
 
@@ -17,7 +19,7 @@
       </div>
 
       <div :class="baseInfoToggled ? 'flex' : 'hidden'" class="flex-col gap-4 mt-4">
-          @!component("components/form/input-row", {
+          @!component("components/form/inputRow", {
             name: "email",
             label: "Email",
             placeholder:"mail@provider.com",
@@ -26,14 +28,14 @@
 
         <div class="flex gap-4 w-full">
 
-          @!component("components/form/input-row", {
+          @!component("components/form/inputRow", {
           name: "firstName",
           label: "Nome",
           placeholder:"Mario",
           value: user.firstName
           })
 
-          @!component("components/form/input-row", {
+          @!component("components/form/inputRow", {
           name: "lastName",
           label: "Cognome",
           placeholder:"Rossi",

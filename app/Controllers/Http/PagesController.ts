@@ -1,4 +1,5 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import { DateTime } from 'luxon'
 import Expense from 'App/Models/Expense'
 import ExpenseCategory from 'App/Models/ExpenseCategory'
 
@@ -20,12 +21,19 @@ export default class PagesController {
         })
     }
 
-    static async expenses({ view }: HttpContextContract) {
+    static async expenses({ view, auth }: HttpContextContract) {
 
-        const expenses = await Expense.query().preload("user").preload("category")
+        const expenses = await Expense.query().preload("user").preload("category").where(query => {
+            query.where("created_at", ">", (DateTime.local().startOf("month").toSQLDate())!)
+        }).orderBy("created_at", "desc")
+
+        const monthlyTotal = expenses.reduce((prev, curr) => prev + curr.ammount, 0)
+        const personalMonthlyTotal = expenses.filter(expense => expense.userId === auth.user!.id).reduce((prev, curr) => prev + curr.ammount, 0)
 
         return view.render("pages/expenses/index", {
-            expenses
+            expenses,
+            monthlyTotal,
+            personalMonthlyTotal
         })
 
     }

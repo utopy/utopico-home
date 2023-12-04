@@ -17,7 +17,7 @@ type Page = {
 const pages: Page[] = [{
 	name: "dashboard",
 	label: "Dashboard",
-	routeName: "admin.protected.dashboard",
+	routeName: "v1.protected.home",
 	icon: {
 		className: "material-symbols-outlined",
 		value: "space_dashboard",
@@ -27,7 +27,7 @@ const pages: Page[] = [{
 }, {
 	name: "expenses",
 	label: "spese",
-	routeName: "admin.protected.calculator.index",
+	routeName: "v1.protected.expenses.view",
 	icon: {
 		className: "material-symbols-outlined",
 		value: "calculate",
@@ -37,23 +37,13 @@ const pages: Page[] = [{
 }, {
 	name: "messages",
 	label: "Messaggi",
-	routeName: "admin.protected.messages.messages",
+	routeName: "v1.protected.home",
 	icon: {
 		className: "material-symbols-outlined",
 		value: "inbox",
 	},
 	current: false,
 	role: Roles.admin
-}, {
-	name: "courses",
-	label: "Corsi",
-	routeName: "admin.protected.courses",
-	icon: {
-		className: "material-symbols-outlined",
-		value: "school",
-	},
-	current: false,
-	role: Roles.user
 }]
 
 export default class SidebarController {

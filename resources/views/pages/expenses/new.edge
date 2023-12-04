@@ -1,15 +1,17 @@
 @!layout("layouts/admin")
 @set("title", title ?? "Nuova Spesa")
 
-@section("body")
-<form class="h-full w-full flex flex-col gap-4" method="post" action="{{route('v1.protected.expenses.new.create')}}">
-
+@section("sectionBar")
   @!component("components/section-bar",{
     title: title,
   })
+@end
 
+@section("body")
+<form class="h-full w-full flex flex-col gap-4" method="post" action="{{route('v1.protected.expenses.new.create')}}">
 
   @card({
+    background: "transparent"
   })
 
     <div class="flex gap-4">
