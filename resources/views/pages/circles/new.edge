@@ -1,0 +1,68 @@
+@!layout("layouts/admin")
+@set("title", title ?? "Nuova Cerchia")
+
+@section("sectionBar")
+  @!component("components/section-bar",{
+    title: title,
+  })
+@end
+
+@section("body")
+<form class="h-full w-full flex flex-col gap-4" method="post" action="{{route('v1.protected.circles.new.create')}}">
+
+  @card({
+    background: "transparent"
+  })
+
+    <div class="flex flex-col md:flex-row gap-4">
+
+      @!form.inputRow({
+        label: "Nome Cerchia",
+        name: "name",
+        placeholder: "Gang",
+        required: true
+      })
+
+    </div>
+
+    <div class="flex flex-col md:flex-row gap-4">
+
+      @!form.inputRow({
+        label: "Ammontare spesa",
+        name: "ammount",
+        type: "number",
+        placeholder: "slug",
+        hidden: true
+      })
+
+    </div>
+
+    <div class="flex h-full max-h-[300px]">
+      @!form.textarea({
+        name: "description",
+        placeholder: "Inserisci una piccola descrizione",
+        label: "Descrizione"
+      })
+    </div>
+    
+
+  @end
+
+
+  <div class="flex gap-4">
+    <a href="/admin/messages/templates"
+      class="px-4 py-2 flex-1 text-black border border-secondary rounded-lg hover:bg-seconary flex justify-center gap-2"
+      type="submit">
+      <span class="material-symbols-outlined">style</span>
+      Templates
+    </a>
+
+    @!form.button({
+      label: "Nuova Cerchia",
+      icon: "adjust",
+      type: "submit"
+    })
+
+  </div>
+</form>
+@end

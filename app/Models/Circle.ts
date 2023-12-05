@@ -1,7 +1,9 @@
 import { DateTime } from 'luxon'
-import { BaseModel, beforeCreate, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, beforeCreate, column, ManyToMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
+import { nanoid } from 'nanoid'
 
 import { string } from '@ioc:Adonis/Core/Helpers'
+import User from './User'
 
 export default class Circle extends BaseModel {
 
@@ -19,10 +21,18 @@ export default class Circle extends BaseModel {
 
     @beforeCreate()
     public static async onCreate(circle: Circle) {
+        console.log(circle)
         if (circle.$dirty.name) {
-            circle.slug = string.dashCase(string.noCase(circle.name + " " + circle.id))
+            circle.slug = string.dashCase(string.noCase(circle.name + " " + nanoid(4)))
         }
     }
+
+    @manyToMany(() => User, {
+        pivotTable: "circles_users",
+        pivotTimestamps: true
+    })
+    public users: ManyToMany<typeof User>
+
 
     @column.dateTime({ autoCreate: true })
     public createdAt: DateTime

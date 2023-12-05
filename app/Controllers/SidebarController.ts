@@ -25,6 +25,16 @@ const pages: Page[] = [{
 	current: false,
 	role: Roles.user
 }, {
+	name: "circles",
+	label: "Cerchie",
+	routeName: "v1.protected.circles.view",
+	icon: {
+		className: "material-symbols-outlined",
+		value: "circles"
+	},
+	current: false,
+	role: Roles.user
+}, {
 	name: "expenses",
 	label: "spese",
 	routeName: "v1.protected.expenses.view",

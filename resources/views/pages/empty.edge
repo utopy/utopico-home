@@ -1,0 +1,33 @@
+@!layout("layouts/admin")
+@set("title", "Empty")
+
+@section("sectionBar")
+  @!component("components/section-bar",{
+    title: title
+  })
+@end
+@section("body")
+<div class="h-full w-full flex flex-col gap-4" x-data="data">
+
+
+</div>
+@end
+
+@section("scripts")
+@super
+
+<script>
+  document.addEventListener("alpine:init", function () {
+    Alpine.data("data", () => ({
+      baseInfoToggled: true,
+      emailProviderToggled: true,
+      toggleAccordion(name) {
+        this[name] = !this[name]
+      }
+
+
+    }))
+  })
+
+</script>
+@end

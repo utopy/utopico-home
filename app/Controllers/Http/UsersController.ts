@@ -24,10 +24,26 @@ export default class UsersController {
     static async register({ request, response, auth }: HttpContextContract) {
 
         const {
-            email, firstName, lastName, password
-        } = request.only(['email', 'firstName', 'lastName', 'password'])
+            email, firstName, lastName, password, password2, username
+        } = request.only(['email', 'firstName', 'lastName', 'password', 'password2', 'username'])
+
+        if (password != password2) {
+            return response.redirect().back()
+        }
 
         const user = new User()
+
+        user.email = email
+        user.firstName = firstName
+        user.lastName = lastName
+        user.password = password
+        user.username = username
+
+        await user.save()
+
+        await auth.use("web").login(user)
+
+        return response.redirect().toRoute("v1.protected.home")
 
     }
 
@@ -50,7 +66,9 @@ export default class UsersController {
             return response.redirect().back()
 
         } catch (err) {
+
             return response.send(err)
+
         }
 
     }

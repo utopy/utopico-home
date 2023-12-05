@@ -2,40 +2,74 @@
 @set("hideSidebar", true)
 
 @section("body")
-<div class="h-full w-full flex flex-col justify-center items-center">
-  <div class="w-full md:mt-0 sm:max-w-md xl:p-0">
-    <div class="p-6 space-y-4 md:space-y-6 sm:p-8  rounded-lg ">
-      <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
-        Create and account
-      </h1>
-      <form class="space-y-4 md:space-y-6" method="post" action="{{sidebar.adminRoute('registerView', false)}}">
-        <div>
-          <label for="email" class="block mb-2 text-sm font-medium text-gray-900 ">Your email</label>
-          <input type="email" name="email" id="email"
-                 class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
-                 placeholder="name@company.com" required="">
-        </div>
-        <div>
-          <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Password</label>
-          <input type="password" name="password" id="password" placeholder="••••••••"
-                 class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
-                 required="">
-        </div>
-        <div>
-          <label for="confirm-password" class="block mb-2 text-sm font-medium text-gray-900">Confirm password</label>
-          <input type="password" name="password2" id="confirm-password" placeholder="••••••••"
-                 class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
-                 required="">
-        </div>
-        <button type="submit"
-                class="w-full text-black bg-secondary hover:bg-primary hover:text-white focus:ring-4 focus:outline-none focus:ring-primary font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-          Create an account
-        </button>
-        <p class="text-sm font-light text-gray-500 ">
-          Already have an account? <a href="#" class="font-medium text-primary hover:underline ">Login here</a>
-        </p>
-      </form>
+
+<form class="h-full w-full flex flex-col gap-4" method="post" action="{{route('v1.registerRequest')}}">
+  <div class="max-w-xl w-full m-auto flex flex-col gap-4">
+    @!typography.title({
+      value: "Registrati ora",
+      bold: true
+    })
+    @card({
+      background: "bg-background-100",
+      padding: "p-8"
+    })
+      <div class="flex gap-4">
+        @!form.inputRow({
+          label: "Nome",
+          name: "firstName",
+          placeholder: "Mario"
+        })
+
+        @!form.inputRow({
+          label: "Cognome",
+          name: "lastName",
+          placeholder: "Rossi"
+        })
+      </div>
+
+      @!form.inputRow({
+        label: "Email",
+        name: "email",
+        placeholder: "mariorossi@verdi.it",
+        type: "email"
+      })
+
+      @!form.inputRow({
+        label: "Username",
+        name: "username",
+        placeholder: "username",
+      })
+
+      <div class="flex gap-4">
+        @!form.inputRow({
+          label: "Password",
+          name: "password",
+          placeholder: "Password",
+          type: "password"
+        })
+
+        @!form.inputRow({
+          label: "Conferma Password",
+          name: "password2",
+          placeholder: "Password",
+          type: "password"
+        })
+      </div>
+
+    @end
+
+    <div class="flex flex-col gap-4">
+      @!form.button({
+        label: "Registrati"
+      })
+
+      @!form.button({
+        label: "accedi",
+        type: "outlined",
+        tag: "a",
+        href: route('v1.login') 
+      })
     </div>
   </div>
-</div>
+</form>
 @end

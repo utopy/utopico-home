@@ -1,6 +1,15 @@
 @set("tag", tag ?? "button")
-<{{tag}} {{ $props.serializeExcept(['icon', 'label', 'tag']) }}
-  class="px-4 py-2 flex-1 text-white bg-accent-900 rounded-lg hover:bg-primary-700 flex justify-center gap-2">
+@set("buttonType", type ?? "solid")
+@set("buttonStyle", "")
+
+@if(buttonType == "solid")
+  @set("buttonStyle", "text-white bg-accent-900 hover:bg-primary-700")
+@elseif(buttonType == "outlined")
+  @set("buttonStyle", "border border-accent-900")
+@end
+
+<{{tag}} {{ $props.serializeExcept(['icon', 'label', 'tag', 'type', 'extraCss']) }}
+  class="px-4 py-2 flex-1 {{buttonStyle}} rounded-lg flex justify-center gap-2 {{extraCss}}">
 
   @if(icon)
     <span class="material-symbols-outlined">{{icon}}</span>

@@ -1,9 +1,11 @@
 import { DateTime } from 'luxon'
 import Hash from '@ioc:Adonis/Core/Hash'
-import { column, beforeSave, BaseModel, computed } from '@ioc:Adonis/Lucid/Orm'
+import { column, beforeSave, BaseModel, computed, manyToMany, ManyToMany } from '@ioc:Adonis/Lucid/Orm'
 import { Roles } from 'App/Enums/Roles'
+import Circle from './Circle'
 
 export default class User extends BaseModel {
+
     @column({ isPrimary: true })
     public id: number
 
@@ -15,6 +17,9 @@ export default class User extends BaseModel {
 
     @column()
     public lastName: string
+
+    @column()
+    public username: string
 
     @column()
     public godMode: boolean
@@ -47,6 +52,12 @@ export default class User extends BaseModel {
     public get fullName() {
         return this.firstName + " " + this.lastName
     }
+
+    @manyToMany(() => Circle, {
+        pivotTimestamps: true,
+        pivotTable: "circles_users"
+    })
+    public circles: ManyToMany<typeof Circle>
 
 
     @beforeSave()

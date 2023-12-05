@@ -6,19 +6,36 @@ import ExpenseCategory from 'App/Models/ExpenseCategory'
 export default class PagesController {
 
     static async homePage({ view }: HttpContextContract) {
-        console.log("home")
         return view.render("pages/dashboard", {})
     }
 
     static async login({ view }: HttpContextContract) {
-        console.log("login")
         return view.render("pages/login", {})
+    }
+
+    static async register({ view }: HttpContextContract) {
+        return view.render("pages/register", {})
     }
 
     static async profile({ view }: HttpContextContract) {
 
         return view.render("pages/profile", {
         })
+    }
+
+    static async circles({ view, auth }: HttpContextContract) {
+
+        const user = auth.user!
+
+        await user.load("circles")
+
+        return view.render("pages/circles/index", {
+            userCircles: user.circles
+        })
+    }
+
+    static async newCircle({ view }: HttpContextContract) {
+        return view.render("pages/circles/new")
     }
 
     static async expenses({ view, auth }: HttpContextContract) {
