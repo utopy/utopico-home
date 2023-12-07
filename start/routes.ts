@@ -75,6 +75,24 @@ Route.group(() => {
 
             }).as("new").prefix("/new")
 
+            Route.group(() => {
+
+                Route.get("/", PagesController.circle).as("view")
+
+                Route.group(() => {
+
+                    Route.group(() => {
+
+                        Route.get("/", PagesController.newCircleExpense).as("view")
+
+                        Route.post("/", CirclesController.createCircleExpense).as("create")
+
+                    }).as("new").prefix("/new")
+
+                }).as("expenses").prefix("/expenses")
+
+            }).as("circle").prefix("/:slug")
+
         }).as("circles").prefix("/circles")
 
     }).as("protected").middleware(['auth'])

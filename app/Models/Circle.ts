@@ -1,9 +1,10 @@
 import { DateTime } from 'luxon'
-import { BaseModel, beforeCreate, column, ManyToMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, beforeCreate, belongsTo, BelongsTo, column, ManyToMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
 import { nanoid } from 'nanoid'
 
 import { string } from '@ioc:Adonis/Core/Helpers'
 import User from './User'
+import Expense from './Expense'
 
 export default class Circle extends BaseModel {
 
@@ -33,6 +34,11 @@ export default class Circle extends BaseModel {
     })
     public users: ManyToMany<typeof User>
 
+    @manyToMany(() => Expense, {
+        pivotTable: "circles_expenses",
+        pivotTimestamps: true
+    })
+    public expenses: ManyToMany<typeof Expense>
 
     @column.dateTime({ autoCreate: true })
     public createdAt: DateTime

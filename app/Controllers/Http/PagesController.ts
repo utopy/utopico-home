@@ -2,6 +2,7 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { DateTime } from 'luxon'
 import Expense from 'App/Models/Expense'
 import ExpenseCategory from 'App/Models/ExpenseCategory'
+import Circle from 'App/Models/Circle'
 
 export default class PagesController {
 
@@ -34,8 +35,53 @@ export default class PagesController {
         })
     }
 
+    static async circle({ request, view, response }: HttpContextContract) {
+
+        const slug = request.param("slug")
+
+        // const circle = await Circle.findBy("slug", slug)
+
+        // if (!circle) return response.redirect("/")
+
+        // await circle.load("expenses")
+
+        // const expenses = circle.expenses
+
+        const circle = (await Circle.query()
+            .where("slug", slug)
+            .preload('expenses', expense => {
+                expense.preload("category")
+                expense.preload("user")
+            }))[0]
+
+        console.log(circle.serialize())
+
+        return view.render("pages/circles/circle", {
+            slug,
+            circle: circle,
+            expenses: circle.expenses
+        })
+    }
+
     static async newCircle({ view }: HttpContextContract) {
         return view.render("pages/circles/new")
+    }
+
+    static async newCircleExpense({ request, response, view }: HttpContextContract) {
+
+        const categories = await ExpenseCategory.all()
+
+        const slug = request.param("slug")
+
+        const circle = await Circle.findBy("slug", slug)
+
+        if (!circle) return response.redirect("/")
+
+        return view.render("pages/circles/expenses/new", {
+            categories: categories,
+            circle: circle.serialize()
+        })
+
     }
 
     static async expenses({ view, auth }: HttpContextContract) {

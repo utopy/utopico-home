@@ -9,6 +9,11 @@
 @end
 
 <{{tag}} {{ $props.serializeExcept(['icon', 'label', 'tag', 'type', 'extraCss']) }}
+
+  @if(xClick)
+    x-on:click.prevent="{{xClick}}"
+  @end
+
   class="px-4 py-2 flex-1 {{buttonStyle}} rounded-lg flex justify-center gap-2 {{extraCss}}">
 
   @if(icon)

@@ -1,3 +1,9 @@
-		<span class="material-symbols-outlined">
-			{{ name }}
-		</span>
+@set("s", "")
+@if(size == "small")
+	@set("s", "text-xs")
+@elseif(size == "medium")
+	@set("s", "text-md")
+@end
+<span class="material-symbols-outlined {{s}}">
+	{{ name }}
+</span>

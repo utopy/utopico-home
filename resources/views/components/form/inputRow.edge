@@ -24,6 +24,10 @@
   @if(xEffect) 
   x-effect="{{xEffect}}"
   @end
+
+  @if(xKeyEnter)
+    @keyup.enter="{{xKeyEnter}}"
+  @end
   
 
   @if(readonly) 

@@ -1,0 +1,100 @@
+@!layout("layouts/admin")
+@set("title", title ?? "Spese Recenti")
+
+
+@section("sectionBar")
+  @!component("components/section-bar",{
+    title: title,
+  })
+@end
+
+@section("body")
+<div class="h-full w-full flex flex-col gap-4" x-data="">
+
+
+  <div class="flex md:flex-row flex-col gap-4">
+    @card()
+      <p class="text-2xl">Monthly Total</p>
+      <p class="text-4xl">{{monthlyTotal}}€</p>
+    @end
+
+    @card()
+      <p class="text-2xl">Personal Monthly Gains</p>
+      <p class="text-4xl">{{personalMonthlyGains}}€</p>
+    @end
+
+    @card()
+    ciao
+    @end
+  </div>
+
+  <div class="flex flex-col flex-1 gap-4">
+
+    @each(expense in expenses)
+
+      @set("expense", expense.serialize())
+
+      <a href="{{route('v1.protected.expenses.details', [expense.id])}}" class="flex rounded-lg border border-secondary-100 p-4 p-8 gap-4 hover:bg-secondary-100 cursor-pointer">
+        <div class="flex-1 flex flex-4 items-center gap-4">
+          <div class="flex flex-col gap-2">
+          
+            @text({
+              capitalize: true, 
+              css: "gap-2 flex items-center"
+            })
+              @!icon({
+                name: expense.category?.icon_name ?? ''
+              })
+              <span>
+                {{expense.name}}
+              </span>
+            @end
+
+            <div class="flex gap-2">
+              <span class="text-sm text-primary">{{expense.category.name}} | creato da {{expense.user.fullName}}</span>
+            </div>
+
+          </div>
+        </div>
+        <div class="flex gap-4 items-center">
+          @!text({
+            value: expense.ammount + "€",
+            bold: true
+          })
+          @if(expense.type === "loss")
+            <div class="w-[15px] h-[15px] bg-red-700 rounded-full"></div>
+          @elseif(expense.type === "gain")
+            <div class="w-[15px] h-[15px] bg-green-700 rounded-full"></div>
+          @end
+        </div>
+      </a>
+    @end
+
+  </div>
+
+
+</div>
+@end
+
+@section("sectionActions")
+  <div class="flex gap-4">
+    <a href="/admin/messages/templates"
+      class="px-4 py-2 flex-1 text-black border border-secondary rounded-lg hover:bg-seconary flex justify-center gap-2"
+      type="submit">
+      <span class="material-symbols-outlined">style</span>
+      Templates
+    </a>
+
+    @!form.button({
+      label: "Nuova Spesa",
+      icon: "calculate",
+      tag: "a",
+      href: route("v1.protected.circles.circle.expenses.new.view", [circle.slug])
+    })
+
+  </div>
+@end
+
+@section("scripts")
+  @super
+@end

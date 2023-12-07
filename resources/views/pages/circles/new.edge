@@ -8,7 +8,7 @@
 @end
 
 @section("body")
-<form class="h-full w-full flex flex-col gap-4" method="post" action="{{route('v1.protected.circles.new.create')}}">
+<div @keyup.enter.prevent="methods.onSubmit" class="h-full w-full flex flex-col gap-4" x-data="newCircleData">
 
   @card({
     background: "transparent"
@@ -20,29 +20,54 @@
         label: "Nome Cerchia",
         name: "name",
         placeholder: "Gang",
-        required: true
+        required: true,
+        xModel: "circleData.name",
+        required: true,
       })
 
     </div>
 
-    <div class="flex flex-col md:flex-row gap-4">
-
-      @!form.inputRow({
-        label: "Ammontare spesa",
-        name: "ammount",
-        type: "number",
-        placeholder: "slug",
-        hidden: true
-      })
-
-    </div>
 
     <div class="flex h-full max-h-[300px]">
       @!form.textarea({
         name: "description",
         placeholder: "Inserisci una piccola descrizione",
-        label: "Descrizione"
+        label: "Descrizione",
+        xModel: "circleData.description"
       })
+    </div>
+
+    <div class="flex flex-col border border-secondary-200 rounded-xl p-4 gap-4">
+
+      <div class="flex flex-col-reverse md:flex-row gap-4">
+
+        @!form.inputRow({
+          label: "Membri cerchia",
+          name: "members",
+          type: "email",
+          placeholder: "Aggiungi un membro ",
+          xKeyEnter: "methods.addMember",
+          xModel: "newMember"
+        })
+
+        <p class="flex-row items-center pt-6">Aggiungi un membro alla tua cerchia inserendo la sua email (se l'utente non è registrato/a verrà inviata una mail)</p>
+
+      </div>
+
+      <div class="flex flex-wrap gap-2" x-show="members.length">
+        <template x-for="member in members">
+          <div class="bg-primary-100 px-4 py-2 text-md rounded-full flex gap-2 items-center">
+            <span class="flex items-center" x-text="member"></span>
+            <span class="flex items-center cursor-pointer" @click="methods.removeMember(member)" >
+              @!icon({
+                name:"close",
+                size: "medium"
+              })
+            </span>
+          </div>
+        </template>
+      </div>
+
     </div>
     
 
@@ -60,9 +85,65 @@
     @!form.button({
       label: "Nuova Cerchia",
       icon: "adjust",
-      type: "submit"
+      xClick: "methods.onSubmit"
+
     })
 
   </div>
-</form>
+</div>
+@end
+
+@section("scripts")
+@super
+
+<script>
+  document.addEventListener("alpine:init", function () {
+
+    const form = document.getElementById("newCircleForm")
+
+    Alpine.data("newCircleData", () => ({
+      members: [],
+      newMember: "",
+      url: "{{route('v1.protected.circles.new.create')}}",
+      circleData: {
+        
+      },
+
+      methods: {
+        removeMember: () => {
+          console.log(this)
+          const member = this.newMember
+          this.members = this.members.filter(m => m != member)
+        },
+        onSubmit(e){
+          e.preventDefault()
+          fetch(this.url, {
+            method: "POST",
+            body: JSON.stringify({
+              members: this.members,
+              ...this.circleData
+            }),
+            headers: {
+              'Content-Type': "application/json"
+            }
+          })
+          return false
+        },
+        addMember(e){
+          e.preventDefault()
+          e.stopPropagation()
+          const email = this.newMember
+
+          if(this.newMember) {
+            this.members.push(email)             
+          }
+
+          this.newMember = ""
+        }
+      }
+      
+    }))
+  })
+
+</script>
 @end
