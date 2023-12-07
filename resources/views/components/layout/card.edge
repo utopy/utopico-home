@@ -2,9 +2,8 @@
 @set("background", background ?? "bg-accent-100")
 @set("padding", padding ?? "p-4")
 @set("gap", gap ?? "gap-4")
-@set("flex", flex ?? "flex-col")
 @set("as", as ?? "div")
-    <{{as}} class="{{background}} flex-1 flex {{flex}} {{padding}} {{gap}} rounded-lg {{extraCss}}" {{$props.serializeExcept(['extraCss', 'as', "background"])}}>
+    <{{as}} class="{{background}} flex-1 flex flex-col {{padding}} {{gap}} rounded-lg {{extraCss}}" {{$props.serializeExcept(['extraCss', 'as', "background"])}}>
 		{{{ await $slots.main() }}}
 </{{as}}>
 

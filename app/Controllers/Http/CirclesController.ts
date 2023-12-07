@@ -5,51 +5,54 @@ import User from 'App/Models/User'
 
 export default class CirclesController {
 
-    public static async createCircle({ request, auth, response }: HttpContextContract) {
+  public static async createCircle({ request, auth, response }: HttpContextContract) {
 
-        const { name, description, members } = request.only(["name", "description", 'members'])
+    const { name, description, members } = request.only(["name", "description", 'members'])
 
-        const circle = new Circle()
+    const circle = new Circle()
 
-        circle.name = name
-        circle.description = description
+    circle.name = name
+    circle.description = description
 
 
-        await circle.save()
+    await circle.save()
 
-        const toInvite = (await User.query().whereIn("email", members)).map(m => m.id)
+    const toInvite = (await User.query().whereIn("email", members)).map(m => m.id)
 
-        circle.related("users").attach([auth.user!.id, ...toInvite])
+    circle.related("users").attach([auth.user!.id, ...toInvite])
 
-        return response.redirect().back()
-    }
+    return response.redirect().back()
+  }
 
-    public static async createCircleExpense({ request, response, auth }: HttpContextContract) {
+  public static async createCircleExpense({ request, response, auth }: HttpContextContract) {
 
-        const slug = request.param("slug")
+    const slug = request.param("slug")
 
-        const circle = await Circle.findBy("slug", slug)
+    const circle = await Circle.findBy("slug", slug)
 
-        if (!circle) return response.redirect("/")
+    if (!circle) return response.redirect("/")
 
-        const {
-            name, expense_category_id, ammount, type, description
-        } = request.only(["name", "expense_category_id", "ammount", 'type', 'description'])
+    const {
+      name, expense_category_id, ammount, type, description
+    } = request.only(["name", "expense_category_id", "ammount", 'type', 'description'])
 
-        const data = new Expense()
+    const data = new Expense()
 
-        data.name = name
-        data.expenseCategoryId = expense_category_id
-        data.ammount = ammount
-        data.type = type
-        data.description = description
-        data.userId = auth.user!.id
+    data.name = name
+    data.expenseCategoryId = expense_category_id
+    data.ammount = ammount
+    data.type = type
+    data.description = description
+    data.userId = auth.user!.id
 
-        await data.save()
+    await data.save()
+    console.log("EXPENSE:")
 
-        circle.related("expenses").attach([data.id])
+    circle.related("expenses").attach([data.id])
 
-        return response.redirect().toRoute("v1.protected.expenses.view")
-    }
+
+
+    return response.redirect().toRoute("v1.protected.expenses.view")
+  }
 
 }

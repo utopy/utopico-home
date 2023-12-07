@@ -1,0 +1,17 @@
+@layout.card({
+  gap: "gap-2",
+  extraCss: "justify-between"
+})
+
+  @each(category in categories)
+  <div class="flex flex-col">
+
+    @!typography.subtitle({
+      value: category.name
+    })
+    <div class="h-[5px] bg-red-500 rounded-full" style="width: {{data[category.name]}}%"></div>
+
+  </div>
+  @end
+
+@end

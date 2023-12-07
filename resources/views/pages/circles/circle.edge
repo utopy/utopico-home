@@ -13,19 +13,20 @@
 
 
   <div class="flex md:flex-row flex-col gap-4">
-    @card()
+    @layout.card()
       <p class="text-2xl">Monthly Total</p>
       <p class="text-4xl">{{monthlyTotal}}€</p>
     @end
 
-    @card()
-      <p class="text-2xl">Personal Monthly Gains</p>
-      <p class="text-4xl">{{personalMonthlyGains}}€</p>
+    @layout.card()
+      <p class="text-2xl">Pro Capite</p>
+      <p class="text-4xl">{{proCapite}}€</p>
     @end
 
-    @card()
-    ciao
-    @end
+    @!widgets.chartCard({
+      categories: categories,
+      data: percentages
+    })
   </div>
 
   <div class="flex flex-col flex-1 gap-4">
