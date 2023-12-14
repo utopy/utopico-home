@@ -20,7 +20,8 @@
         label: "Nome spesa",
         name: "name",
         placeholder: "Bolletta",
-        required: true
+        required: true,
+        xModel: "expenseData.name"
       })
 
       @!form.select({
@@ -29,7 +30,8 @@
         optionValueKey: "id",
         optionLabelKey: "name",
         options: categories,
-        name: "expense_category_id"
+        name: "category",
+        xModel: "expenseData.category"
       })
 
     </div>
@@ -40,7 +42,8 @@
         label: "Ammontare spesa",
         name: "ammount",
         type: "number",
-        placeholder: "Ammontare (senza valuta)"
+        placeholder: "Ammontare (senza valuta)",
+        xModel: "expenseData.ammount"
       })
 
       @!form.select({
@@ -64,7 +67,8 @@
       @!form.textarea({
         name: "description",
         placeholder: "Inserisci una piccola descrizione",
-        label: "Descrizione"
+        label: "Descrizione",
+        xModel: "expenseData.description"
       })
     </div>
 
@@ -74,7 +78,7 @@
 
       <div class="flex flex-1 gap-4 flex-wrap">
         <template x-for="partecipant in partecipants">
-          <div class="bg-primary-100 rounded-full flex items-center justify-center gap-4 cursor-pointer px-4 border-primary-500" @click.prevent="member.selected = true" >
+          <div class="bg-primary-100 rounded-full flex items-center justify-center gap-4 cursor-pointer px-4 border-primary-100" @click.prevent="() => togglePartecipant(partecipant)" :class="partecipant.selected && 'border-2'" >
             <span class="material-symbols-outlined">
               account_circle
             </span>
@@ -122,6 +126,16 @@
   document.addEventListener("alpine:init", function () {
     Alpine.data("newExpenseData", () => ({
       partecipants: JSON.parse('{{{membersString}}}').map(el => ({...el, selected: false})),
+      expenseData: {
+        
+      },
+      togglePartecipant: (partecipant) => {
+        partecipant.selected = !partecipant.selected
+        console.log(this.expenseData)
+      },
+      submitExpense(){
+        
+      }
     //   init: () => console.log(this)
     }))
 
