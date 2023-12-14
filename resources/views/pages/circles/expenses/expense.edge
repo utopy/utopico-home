@@ -1,0 +1,14 @@
+@!layout("layouts/admin")
+@set("title", title ?? "Nuova Spesa")
+
+@section("sectionBar")
+  @!component("components/section-bar",{
+    title: circle.slug,
+  })
+@end
+
+@section("body")
+<div>
+  expense
+</div>
+@end

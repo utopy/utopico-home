@@ -8,7 +8,7 @@
 @end
 
 @section("body")
-<form class="h-full w-full flex flex-col gap-4" method="post" action="{{route('v1.protected.circles.circle.expenses.new.create', [circle.slug])}}">
+<form class="h-full w-full flex flex-col gap-4" method="post" action="{{route('v1.protected.circles.circle.expenses.new.create', [circle.slug])}}" x-data="newExpenseData">
 
   @card({
     background: "transparent"
@@ -67,6 +67,30 @@
         label: "Descrizione"
       })
     </div>
+
+    <div class="flex flex-col border border-secondary-200 rounded-xl p-4 gap-4">
+
+      <div class="flex flex-col-reverse md:flex-row gap-4">
+
+      <div class="flex flex-1 gap-4 flex-wrap">
+        <template x-for="partecipant in partecipants">
+          <div class="bg-primary-100 rounded-full flex items-center justify-center gap-4 cursor-pointer px-4 border-primary-500" @click.prevent="member.selected = true" >
+            <span class="material-symbols-outlined">
+              account_circle
+            </span>
+            <span x-text="partecipant.fullName">
+            </span>
+            </div>
+          </template>
+      </div>
+
+
+        <p class="flex-row items-center pt-6">Aggiungi un membro alla tua cerchia inserendo la sua email (se l'utente non è registrato/a verrà inviata una mail)</p>
+
+      </div>
+
+
+    </div>
     
 
   @end
@@ -88,4 +112,24 @@
 
   </div>
 </form>
+@end
+
+@section("scripts")
+@super
+
+<script>
+
+  document.addEventListener("alpine:init", function () {
+    Alpine.data("newExpenseData", () => ({
+      partecipants: JSON.parse('{{{membersString}}}').map(el => ({...el, selected: false})),
+    //   init: () => console.log(this)
+    }))
+
+    
+  })
+
+  console.log()
+  
+</script>
+
 @end

@@ -35,7 +35,7 @@ export default class PagesController {
     })
   }
 
-  static async circle({ request, view, auth }: HttpContextContract) {
+  /*static async circle({ request, view, auth }: HttpContextContract) {
 
     const slug = request.param("slug")
 
@@ -91,28 +91,91 @@ export default class PagesController {
       proCapite,
       percentages: _categoriesPerentages
     })
+  }*/
+
+  static async circle({ request, view, response }: HttpContextContract) {
+
+        const slug = request.param("slug")
+
+        // const circle = await Circle.findBy("slug", slug)
+
+        // if (!circle) return response.redirect("/")
+
+        // await circle.load("expenses")
+
+        // const expenses = circle.expenses
+
+        const circle = (await Circle.query()
+            .where("slug", slug)
+            .preload('expenses', expense => {
+                expense.preload("category")
+                expense.preload("user")
+                expense.preload("partecipants")
+            }))[0]
+
+        console.log(circle.serialize())
+
+        return view.render("pages/circles/circle", {
+            slug,
+            circle: circle,
+            expenses: circle.expenses
+        })
+    }
+
+  static async circleExpense({ request, view, response }: HttpContextContract) {
+
+    const slug = request.param("slug")
+
+    const expenseSlug = request.param("expenseSlug")
+
+    // const circle = (await Circle.query()
+    //     .where("slug", slug)
+    //     .preload('expenses', expense => {
+    //         expense.preload("category")
+    //         expense.preload("user")
+    //         expense.preload("partecipants")
+    //     }))[0]
+
+    const circle = await Circle.findBy("slug", slug)
+
+    if (!circle) return response.redirect("/")
+
+    const expenses = await circle.related("expenses").query().where("slug", expenseSlug)[0]
+
+    return expenses
+
+    return view.render("pages/circles/expenses/expense"{
+        circle
+    })
   }
 
   static async newCircle({ view }: HttpContextContract) {
     return view.render("pages/circles/new")
   }
 
-  static async newCircleExpense({ request, response, view }: HttpContextContract) {
+    static async newCircleExpense({ request, response, view }: HttpContextContract) {
 
-    const categories = await ExpenseCategory.all()
+        const categories = await ExpenseCategory.all()
 
-    const slug = request.param("slug")
+        const slug = request.param("slug")
 
-    const circle = await Circle.findBy("slug", slug)
+        const circle = await Circle.findBy("slug", slug)
 
-    if (!circle) return response.redirect("/")
+        await circle!.load("users")
+        await circle!.load("expenses")
 
-    return view.render("pages/circles/expenses/new", {
-      categories: categories,
-      circle: circle.serialize()
-    })
+        if (!circle) return response.redirect("/")
 
-  }
+        console.log(circle.users.map(el => el.toJSON()))
+
+        return view.render("pages/circles/expenses/new", {
+            categories: categories,
+            circle: circle.serialize(),
+            members: circle.users,
+            membersString: JSON.stringify(circle.users.map(user => user.toJSON())),
+        })
+
+    }
 
   static async expenses({ view, auth }: HttpContextContract) {
 

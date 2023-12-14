@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
 import { nanoid } from 'nanoid'
-import { BaseModel, beforeCreate, belongsTo, BelongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, beforeCreate, belongsTo, BelongsTo, column, ManyToMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
 import ExpenseCategory from './ExpenseCategory'
 import User from './User'
 
@@ -43,6 +43,12 @@ export default class Expense extends BaseModel {
       expense.slug = string.dashCase(string.noCase(expense.name + " " + nanoid(4)))
     }
   }
+
+  @manyToMany(() => User, {
+    pivotTable: "expenses_partecipants",
+    pivotTimestamps: true
+  })
+  public partecipants: ManyToMany<typeof User>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

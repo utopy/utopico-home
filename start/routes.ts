@@ -89,6 +89,9 @@ Route.group(() => {
 
                     }).as("new").prefix("/new")
 
+                    Route.get("/:expenseSlug", PagesController.circleExpense).as("expense")
+
+
                 }).as("expenses").prefix("/expenses")
 
             }).as("circle").prefix("/:slug")
