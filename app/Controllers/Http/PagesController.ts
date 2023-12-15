@@ -95,32 +95,33 @@ export default class PagesController {
 
   static async circle({ request, view, response }: HttpContextContract) {
 
-        const slug = request.param("slug")
+    const slug = request.param("slug")
 
-        // const circle = await Circle.findBy("slug", slug)
+    // const circle = await Circle.findBy("slug", slug)
 
-        // if (!circle) return response.redirect("/")
+    // if (!circle) return response.redirect("/")
 
-        // await circle.load("expenses")
+    // await circle.load("expenses")
 
-        // const expenses = circle.expenses
+    // const expenses = circle.expenses
 
-        const circle = (await Circle.query()
-            .where("slug", slug)
-            .preload('expenses', expense => {
-                expense.preload("category")
-                expense.preload("user")
-                expense.preload("partecipants")
-            }))[0]
+    const circle = (await Circle.query()
+      .where("slug", slug)
+      .preload('expenses', expense => {
+        expense.preload("category")
+        expense.preload("user")
+        expense.preload("partecipants")
+      }))[0]
 
-        console.log(circle.serialize())
+    const monthlyTotal = circle.expenses.filter(expense => expense.type === "loss").reduce((prev, curr) => prev + curr.ammount, 0)
 
-        return view.render("pages/circles/circle", {
-            slug,
-            circle: circle,
-            expenses: circle.expenses
-        })
-    }
+    return view.render("pages/circles/circle", {
+      slug,
+      circle: circle,
+      expenses: circle.expenses,
+      monthlyTotal
+    })
+  }
 
   static async circleExpense({ request, view, response }: HttpContextContract) {
 
@@ -140,51 +141,55 @@ export default class PagesController {
 
     if (!circle) return response.redirect("/")
 
-    const expenses = await circle.related("expenses").query().where("slug", expenseSlug)[0]
+    const expense = (await circle.related("expenses").query().where("slug", expenseSlug))[0]
 
-    return expenses
+    await expense.load("partecipants")
+    await expense.load("category")
+    await expense.load("user")
 
-    return view.render("pages/circles/expenses/expense"{
-        circle
-    })
+    return expense
+
+    // return view.render("pages/circles/expenses/expense"{
+    //   circle,
+    //   expenses
+    // })
   }
 
   static async newCircle({ view }: HttpContextContract) {
     return view.render("pages/circles/new")
   }
 
-    static async newCircleExpense({ request, response, view }: HttpContextContract) {
+  static async newCircleExpense({ request, response, view }: HttpContextContract) {
 
-        const categories = await ExpenseCategory.all()
+    const categories = await ExpenseCategory.all()
 
-        const slug = request.param("slug")
+    const slug = request.param("slug")
 
-        const circle = await Circle.findBy("slug", slug)
+    const circle = await Circle.findBy("slug", slug)
 
-        await circle!.load("users")
-        await circle!.load("expenses")
+    await circle!.load("users")
+    await circle!.load("expenses")
 
-        if (!circle) return response.redirect("/")
+    if (!circle) return response.redirect("/")
 
-        console.log(circle.users.map(el => el.toJSON()))
+    console.log(circle.users.map(el => el.toJSON()))
 
-        return view.render("pages/circles/expenses/new", {
-            categories: categories,
-            circle: circle.serialize(),
-            members: circle.users,
-            membersString: JSON.stringify(circle.users.map(user => user.toJSON())),
-        })
+    return view.render("pages/circles/expenses/new", {
+      categories: categories,
+      circle: circle.serialize(),
+      members: circle.users,
+      membersString: JSON.stringify(circle.users.map(user => user.toJSON())),
+    })
 
-    }
+  }
 
   static async expenses({ view, auth }: HttpContextContract) {
 
-    const expenses = await Expense.query().preload("user").preload("category").where(query => {
+    const expenses = await Expense.query().preload("user").preload("partecipants").preload("category").where(query => {
       query.where("user_id", "=", auth.user!.id)
       query.andWhere("created_at", ">", (DateTime.local().startOf("month").toSQLDate())!)
     }).orderBy("created_at", "desc")
 
-    console.log(expenses)
 
     const monthlyTotal = expenses.filter(expense => expense.type === "loss").reduce((prev, curr) => prev + curr.ammount, 0)
     const personalMonthlyTotal = expenses.filter(expense => expense.userId === auth.user!.id).reduce((prev, curr) => prev + curr.ammount, 0)

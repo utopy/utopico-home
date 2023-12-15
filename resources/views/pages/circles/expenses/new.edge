@@ -31,7 +31,7 @@
         optionLabelKey: "name",
         options: categories,
         name: "category",
-        xModel: "expenseData.category"
+        xModel: "expenseData.expense_category_id"
       })
 
     </div>
@@ -51,6 +51,7 @@
         placeholder: "Seleziona una tipologia",
         optionValueKey: "id",
         optionLabelKey: "name",
+        xModel: "expenseData.type",
         options: [{
             id: "loss",
             name : "Spesa"
@@ -78,7 +79,7 @@
 
       <div class="flex flex-1 gap-4 flex-wrap">
         <template x-for="partecipant in partecipants">
-          <div class="bg-primary-100 rounded-full flex items-center justify-center gap-4 cursor-pointer px-4 border-primary-100" @click.prevent="() => togglePartecipant(partecipant)" :class="partecipant.selected && 'border-2'" >
+          <div class="bg-primary-100 ring-black rounded-full flex items-center justify-center gap-4 cursor-pointer px-4 " @click.prevent="() => togglePartecipant(partecipant)" :class="partecipant.selected && 'ring-2'" >
             <span class="material-symbols-outlined">
               account_circle
             </span>
@@ -111,7 +112,8 @@
     @!form.button({
       label: "Nuova Spesa",
       icon: "calculate",
-      type: "submit"
+      type: "submit",
+      xClick: "submitExpense"
     })
 
   </div>
@@ -122,19 +124,32 @@
 @super
 
 <script>
+  console.log("{{ route('v1.protected.circles.circle.expenses.new.create', [circle.slug]) }}")
 
   document.addEventListener("alpine:init", function () {
     Alpine.data("newExpenseData", () => ({
-      partecipants: JSON.parse('{{{membersString}}}').map(el => ({...el, selected: false})),
+      partecipants: JSON.parse('{{{membersString}}}').map(el => ({...el, selected: false})) ?? [],
+      route: "{{ route('v1.protected.circles.circle.expenses.new.create', [circle.slug]) }}",
       expenseData: {
         
       },
-      togglePartecipant: (partecipant) => {
+      togglePartecipant(partecipant) {
         partecipant.selected = !partecipant.selected
-        console.log(this.expenseData)
+        // console.log(this.partecipants.filter(part => part.selected))
       },
-      submitExpense(){
-        
+      submitExpense(e){
+        e.preventDefault()
+        // fetch(this.route)
+        fetch(this.route, {
+          method: "POST",
+          body: JSON.stringify({
+            partecipants: this.partecipants.filter(partecipant => partecipant.selected),
+            ...this.expenseData
+          }),
+          headers: {
+            'Content-Type': "application/json"
+          }
+        }).then(res => res.json()).then(data => console.log(data))
       }
     //   init: () => console.log(this)
     }))

@@ -52,7 +52,17 @@
             @end
 
             <div class="flex gap-2">
-              <span class="text-sm text-primary">{{expense.category.name}} | creato da {{expense.user.fullName}}</span>
+              <span class="text-sm text-primary">
+                {{expense.category.name}} | creato da {{expense.user.fullName}} | partecipano
+                @each((partecipant, i) in expense.partecipants)
+                  <span>
+                    {{partecipant.fullName}}
+                    @if(i != expense.partecipants.length - 1)
+                    ,
+                    @end
+                  </span>
+                @end
+              </span>
             </div>
 
           </div>

@@ -26,6 +26,8 @@ export default class CirclesController {
 
   public static async createCircleExpense({ request, response, auth }: HttpContextContract) {
 
+    // return request.body()
+
     const slug = request.param("slug")
 
     const circle = await Circle.findBy("slug", slug)
@@ -33,8 +35,8 @@ export default class CirclesController {
     if (!circle) return response.redirect("/")
 
     const {
-      name, expense_category_id, ammount, type, description
-    } = request.only(["name", "expense_category_id", "ammount", 'type', 'description'])
+      name, expense_category_id, ammount, type, description, partecipants
+    } = request.only(["name", "expense_category_id", "ammount", 'type', 'description', 'partecipants'])
 
     const data = new Expense()
 
@@ -49,6 +51,8 @@ export default class CirclesController {
     console.log("EXPENSE:")
 
     circle.related("expenses").attach([data.id])
+    data.related("partecipants").attach([...partecipants.map(part => part.id)])
+
 
 
 
