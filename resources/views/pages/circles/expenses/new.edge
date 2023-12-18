@@ -135,9 +135,9 @@
       },
       togglePartecipant(partecipant) {
         partecipant.selected = !partecipant.selected
-        // console.log(this.partecipants.filter(part => part.selected))
       },
       submitExpense(e){
+
         e.preventDefault()
         // fetch(this.route)
         fetch(this.route, {
@@ -150,6 +150,7 @@
             'Content-Type': "application/json"
           }
         }).then(res => res.json()).then(data => console.log(data))
+
       }
     //   init: () => console.log(this)
     }))
