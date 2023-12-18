@@ -110,6 +110,7 @@ export default class PagesController {
         const circle = (await Circle.query()
             .where("slug", slug)
             .preload('expenses', expense => {
+                expense.where("expenses.created_at", ">", (DateTime.local().startOf("month").toSQLDate())!)
                 expense.preload("category")
                 expense.preload("user")
                 expense.preload("partecipants")

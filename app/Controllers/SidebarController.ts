@@ -54,6 +54,16 @@ const pages: Page[] = [{
 	},
 	current: false,
 	role: Roles.admin
+}, {
+	name: "goals",
+	label: "Obiettivi",
+	routeName: "v1.protected.home",
+	icon: {
+		className: "material-symbols-outlined",
+		value: "flag_circle",
+	},
+	current: false,
+	role: Roles.user
 }]
 
 export default class SidebarController {
