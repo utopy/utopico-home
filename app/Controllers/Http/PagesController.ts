@@ -93,7 +93,7 @@ export default class PagesController {
       })
     }*/
 
-    static async circle({ request, view, response, auth }: HttpContextContract) {
+    static async circle({ request, view, auth }: HttpContextContract) {
 
         const slug = request.param("slug")
 
@@ -133,7 +133,7 @@ export default class PagesController {
         })
     }
 
-    static async circleExpense({ request, view, response }: HttpContextContract) {
+    static async circleExpense({ request, response }: HttpContextContract) {
 
         const slug = request.param("slug")
 
