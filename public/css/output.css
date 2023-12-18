@@ -787,10 +787,6 @@ video {
   border-width: 1px;
 }
 
-.border-2 {
-  border-width: 2px;
-}
-
 .border-l-0 {
   border-left-width: 0px;
 }
@@ -802,11 +798,6 @@ video {
 .border-accent-900 {
   --tw-border-opacity: 1;
   border-color: rgb(31 46 5 / var(--tw-border-opacity));
-}
-
-.border-black {
-  --tw-border-opacity: 1;
-  border-color: rgb(0 0 0 / var(--tw-border-opacity));
 }
 
 .border-gray-300 {
@@ -1065,14 +1056,6 @@ video {
 
 .opacity-50 {
   opacity: 0.5;
-}
-
-.outline-2 {
-  outline-width: 2px;
-}
-
-.outline-black {
-  outline-color: #000;
 }
 
 .ring-2 {
